@@ -15,8 +15,8 @@ def get_most_frequent_words(text):
     frequency_words = collections.Counter(words)
     sorted_words = sorted(frequency_words.items(),
                           key=operator.itemgetter(1), reverse=True)
-    for i in sorted_words[:10]:
-        print(i[0])
+    for word in sorted_words[:10]:
+        print(word[0])
 
 
 if __name__ == '__main__':
