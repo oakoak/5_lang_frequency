@@ -1,6 +1,7 @@
 import string
 from collections import Counter
 import sys
+import argparse
 
 
 def load_data(filepath):
@@ -20,17 +21,28 @@ def pprint_words(most_frequent_words):
         print(word, ":", count)
 
 
-if __name__ == '__main__':
-    try:
-        file_path = sys.argv[1]
-        text = load_data(file_path)
-        count = int(input("Enter the number of the most frequent words: "))
-    except IndexError:
-        exit("Error: No filename for reading!")
-    except FileNotFoundError:
-        exit("Error: file or path '{0}' not found!\n".format(file_path))
-    except ValueError:
-        exit("You entered an incorrect value")
+def get_parser_args():
+    parser = argparse.ArgumentParser(description="Most frequent words in text")
+    parser.add_argument(
+        "path",
+        help="path for .txt file",
+    )
+    parser.add_argument(
+        "number",
+        type=int,
+        nargs="?",
+        default=10,
+        help="count of encountered words in text"
+    )
+    arguments = parser.parse_args()
+    return arguments
 
-    most_frequent_words = get_most_frequent_words(text, count)
+
+if __name__ == "__main__":
+    arguments = get_parser_args()
+    try:
+        text = load_data(arguments.path)
+    except FileNotFoundError:
+        exit("ERROR : file '{}' not found\n".format(arguments.path))
+    most_frequent_words = get_most_frequent_words(text, arguments.number)
     pprint_words(most_frequent_words)
