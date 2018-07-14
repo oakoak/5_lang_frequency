@@ -19,7 +19,7 @@ lang_frequency.pprint_words(most_frequent_words)
 
 ### How starting
 ```bash
-$ python lang_frequency.py exemple.txt
+$ python lang_frequency.py exemple.txt <your number>
 ```
 
 ### Example result
