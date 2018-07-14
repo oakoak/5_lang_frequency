@@ -1,6 +1,5 @@
 import string
-import collections
-import operator
+from collections import Counter
 import sys
 
 
@@ -9,23 +8,29 @@ def load_data(filepath):
         return file.read()
 
 
-def get_most_frequent_words(text):
-    words = filter(None, [word.strip(string.punctuation).lower()
-                          for word in text.split()])
-    frequency_words = collections.Counter(words)
-    sorted_words = sorted(frequency_words.items(),
-                          key=operator.itemgetter(1), reverse=True)
-    for word in sorted_words[:10]:
-        print(word[0])
+def get_most_frequent_words(text, number_of_words):
+    all_words = filter(None, [word.strip(string.punctuation)
+                          for word in text.lower().split()])
+    most_frequent_words = Counter(all_words).most_common(number_of_words)
+    return most_frequent_words
+
+
+def pprint_words(most_frequent_words):
+    for word, count in most_frequent_words:
+        print(word, ":", count)
 
 
 if __name__ == '__main__':
     try:
         file_path = sys.argv[1]
         text = load_data(file_path)
+        count = int(input("Enter the number of the most frequent words: "))
     except IndexError:
         exit("Error: No filename for reading!")
     except FileNotFoundError:
         exit("Error: file or path '{0}' not found!\n".format(file_path))
+    except ValueError:
+        exit("You entered an incorrect value")
 
-    get_most_frequent_words(text)
+    most_frequent_words = get_most_frequent_words(text, count)
+    pprint_words(most_frequent_words)
